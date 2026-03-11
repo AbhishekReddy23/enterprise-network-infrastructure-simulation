@@ -82,9 +82,8 @@ enterprise-network-infrastructure-simulation
 │   ├── clients
 │   └── servers
 │
-├── topology
-│   └── topology.png
-│
+├── topology.pdf
+│   
 └── captures
 
 configs → configuration files for routers, clients, and servers
