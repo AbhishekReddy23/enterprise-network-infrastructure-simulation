@@ -85,7 +85,7 @@ enterprise-network-infrastructure-simulation
 ├── topology
 │   └── topology.png
 │
-└── screenshots
+└── captures
 
 configs → configuration files for routers, clients, and servers
 
@@ -93,7 +93,7 @@ lab → Kathara lab configuration and commands
 
 topology → network architecture diagram
 
-screenshots → visual demonstrations of the running network
+Captures→ pcap data of clients for proof of working of network 
 ```
 ## Running the Lab
 
