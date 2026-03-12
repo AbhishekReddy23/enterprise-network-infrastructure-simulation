@@ -1,0 +1,10 @@
+/etc/init.d/networking restart
+
+
+ip route add 192.168.1.0/24 via 192.168.88.1
+ip route add 50.0.0.0/24 via 192.168.88.1
+ip route add 103.201.28.0/23 via 192.168.88.1
+ip route add 100.0.0.0/24 via 192.168.88.1
+ip route add 145.97.4.96/27 via 192.168.88.1
+ip route add 23.75.0.0/16 via 192.168.88.1
+ip route add 151.0.45.0/31 via 192.168.88.1

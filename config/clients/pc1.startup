@@ -1,0 +1,24 @@
+/etc/init.d/networking restart
+
+dhclient eth0
+
+ip route add default via 192.168.1.1
+
+ip route add 50.0.0.0/24 via 192.168.1.1
+ip route add 100.0.0.0/24 via 192.168.1.1
+ip route add 193.201.28.0/23 via 192.168.1.1
+ip route add 145.97.4.96/27 via 192.168.1.1
+ip route add 23.75.0.0/16 via 192.168.1.1
+ip route add 151.0.45.0/31 via 192.168.1.1
+#ip route add 192.168.88.0/24 via 192.168.1.1 
+
+#This following route will be used for task 11 to get the packet capture on s3 while pinging pc1 to pc3
+ip route add 192.168.88.0/24 via 10.10.0.1
+
+
+echo -e '\n\n\n' | ssh-keygen
+cp /root/.ssh/id_rsa.pub /shared
+
+mkdir -p /dev/net
+mknod /dev/net/tun c 10 200
+chmod 600 /dev/net/tun

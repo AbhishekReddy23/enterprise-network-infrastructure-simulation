@@ -1,0 +1,44 @@
+/etc/init.d/networking restart
+
+# Routing Setup
+ip route add 192.168.1.0/24 via 151.0.45.0
+ip route add 50.0.0.0/24 via 151.0.45.0
+ip route add 193.201.28.0/23 via 151.0.45.0
+ip route add 100.0.0.0/24 via 151.0.45.0
+ip route add 145.97.4.96/27 via 151.0.45.0
+ip route add 23.75.0.0/16 via 151.0.45.0
+
+# --- NAT & PORT FORWARDING ---
+
+# Enable IP Forwarding
+sysctl -w net.ipv4.ip_forward=1
+
+# Clear old rules
+iptables -F
+iptables -t nat -F
+
+# 1. Masquerade Outgoing Traffic (Allow internal machines to use the internet)
+iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+
+# 2. VPN Port Forwarding (The Fix for Task 9)
+# Any TCP traffic hitting Public IP 151.0.45.1 on Port 7070 gets sent to Server S3
+iptables -t nat -A PREROUTING -d 151.0.45.1 -p tcp --dport 7070 -j DNAT --to-destination 192.168.88.100:7070
+
+
+# --- FIREWALL RULES ---
+
+# Default Policy: Block everything unless explicitly allowed
+iptables -P FORWARD DROP
+
+# Allow traffic starting from inside the lab (192.168.88.0/24)
+iptables -A FORWARD -s 192.168.88.0/24 -j ACCEPT
+
+# Allow return traffic (Replies)
+iptables -A FORWARD -d 192.168.88.0/24 -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+
+# 3. Allow the VPN Traffic we just forwarded (CRITICAL FIX)
+# Without this, the 'Default DROP' above kills the connection even after forwarding.
+iptables -A FORWARD -d 192.168.88.100 -p tcp --dport 7070 -j ACCEPT
+
+service iptables restart
+
